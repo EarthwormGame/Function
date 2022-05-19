@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <windows.h>
+
+void gotoxy(int x, int y)
+{
+	COORD CursorPosition = { x, y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), CursorPosition);
+}
+int main()
+{                                //게임 함수 입력 이후에 좌표설정해서 위치 정할 것
+	int hour, min, sec;
+	hour = 0;
+	min = 0;
+	sec = 60;
+
+	int before_start();
+
+	while (1) {
+		system("cls");
+		printf("%02d: %02d: %02d", hour, min, sec);
+		sec--;
+		if (sec == 0)                               //게임함수 호출 위치 (break 쓸지는 미정)
+		Sleep(1000);
+	}
+}
+
+int before_start() {
+	srand((int)time(NULL));
+	for (int sec = 3; sec > 0; sec--)
+	{
+		gotoxy(0, 5);
+		printf("게임시작 %d초전..", sec);
+		Sleep(1000);
+	}
+}
+
+
+int game() {             //게임 함수 구현부
+
+}
