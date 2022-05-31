@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # earthwormGame
 ## SWING Project
 ### 박지원 신하연 손효림 한아림
