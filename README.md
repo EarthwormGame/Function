@@ -14,5 +14,8 @@ ___
 
 =======
 # Function
-주요 함수
->>>>>>> 491cc71e45675dab4d381e8e60ba4375c8589b42
+# 주요 함수
++ prey
++ field
++ move
++ timer
