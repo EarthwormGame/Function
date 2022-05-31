@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <Windows.h>
 #include <conio.h>
 
@@ -70,7 +71,7 @@ void filed() { // 게임 영역
 }
 
 void prey() {
-	if (prey_m == 0) { //food_switch의 초기값이 0이므로 처음에는 무조건 출력된다
+	if (prey_m == 0) { //prey_m의 초기값이 0이므로 처음에는 무조건 출력된다
 		//먹이 랜덤 x, y좌표를 food_x, food_y에 각각 저장.
 		prey_x = preyX();
 		prey_y = preyY();
@@ -93,7 +94,8 @@ int preyY(void) {
 }
 
 int main() {
-
+	
+	srand((unsigned int)time(NULL)); // seed 값으로 현재 시간값을 부여
 	system("mode con:cols=90 lines=50");
 
 	filed();
