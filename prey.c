@@ -10,8 +10,12 @@
 #define MAP_X 3
 #define MAP_Y 2
 
+
 void gotoXY(int x, int y, char* s);
 void reset();
+void prey();
+void gameOver();
+
 int preyX(void);
 int preyY(void);
 
@@ -70,8 +74,7 @@ void title() {
     gotoXY(MAP_X + (FIELD_WIDTH / 2) - 15, MAP_Y + 7, "└──────────────────────────┘");
 
     gotoXY(MAP_X + (FIELD_WIDTH / 2) - 15, MAP_Y + 9, " [ PRESS ANY KEY TO START ] ");
-    gotoXY(MAP_X + (FIELD_WIDTH / 2) - 15, MAP_Y + 13, "   ◇ ESC : Quit              ");
-
+      
     while (1) {
         if (_kbhit()) { //키입력받음 
             key = _getch();
@@ -92,10 +95,70 @@ void title() {
 }
 
 
+void timer() {
+    for (int sec = 10; sec > -1; sec--)
+    {
+        gotoXY(MAP_X - 2, MAP_Y + FIELD_HEIGHT, " TIME: ");
+        printf("%d초..", sec);
+        Sleep(1000);
+
+        if (sec == 0)
+        {
+
+            gameOver();
+
+        }
+    }
+}
+
+void reset() {
+    system("cls");
+
+    filed();
+
+    while (_kbhit()) _getch();
+
+    prey_m = 0;
+    score = 0;
+
+    prey();
+    timer();
+}
+
+void gameOver() {
+    system("cls");
+    filed();
+
+    gotoXY(MAP_X + (FIELD_WIDTH / 2) - 15, MAP_Y + 5, "┌──────────────────────────┐");
+    gotoXY(MAP_X + (FIELD_WIDTH / 2) - 15, MAP_Y + 6, "│         GAME OVER        │");
+    gotoXY(MAP_X + (FIELD_WIDTH / 2) - 15, MAP_Y + 7, "└──────────────────────────┘");
+
+    gotoXY(MAP_X + (FIELD_WIDTH / 2) - 10, MAP_Y + 9, "YOUR SCORE : ");
+    printf(" %d ! ", score);
+
+    gotoXY(MAP_X + (FIELD_WIDTH / 2) - 15, MAP_Y + 13, "   ◇ SPACE BAR : Restart");
+    gotoXY(MAP_X + (FIELD_WIDTH / 2) - 15, MAP_Y + 14, "   ◇ ESC : Quit");
+
+    while (1)
+    {
+
+        if (_kbhit()) { //키입력받음 
+            key = _getch();
+            if (key == 32) { // spacebar 누르면 재시작
+                reset();
+            }
+            else if (key == 27) {
+                exit(1); //ESC 키 누르면 종료
+            }
+        }
+    }
+}
+
+
 void prey() {
 
-    gotoXY(MAP_X - 2.5, MAP_Y + FIELD_HEIGHT, " YOUR SCORE: "); //점수표시 
-    printf("%3d, LAST SCORE: %3d, BEST SCORE: %3d", score, score, score);
+    gotoXY(MAP_X + 8, MAP_Y + FIELD_HEIGHT, "          "); //점수표시 
+    printf("SCORE: %3d", score);
 
     while (1) {
 
@@ -139,30 +202,21 @@ int preyY() {
     return prey_y;
 }
 
+void noCunsor() { // 콘솔창의 커서 숨김
+    HANDLE console;
+    CONSOLE_CURSOR_INFO ConsoleCursor;
 
-void reset() {
-    system("cls");
-
-    filed();
-
-    while (_kbhit()) _getch();
-
-    score = 0;
-    prey();
-}
-
-void gameOver() {
-
-    gotoXY(MAP_X + (FIELD_WIDTH / 2) - 15, MAP_Y + 5, "┌──────────────────────────┐");
-    gotoXY(MAP_X + (FIELD_WIDTH / 2) - 15, MAP_Y + 6, "│       GAME OVER        │");
-    gotoXY(MAP_X + (FIELD_WIDTH / 2) - 15, MAP_Y + 7, "└──────────────────────────┘");
-
+    console = GetStdHandle(STD_OUTPUT_HANDLE);
+    ConsoleCursor.bVisible = 0;
 }
 
 int main() {
 
+    
     srand((unsigned int)time(NULL)); // seed 값으로 현재 시간값을 부여
     system("mode con:cols=90 lines=50"); // 콘솔창 크기 
+
+    noCunsor();
 
     filed();
     title();
